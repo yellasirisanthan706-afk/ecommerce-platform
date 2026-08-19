@@ -29,8 +29,12 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    bat 'sonar-scanner.bat -Dsonar.projectKey=ecommerce-platform -Dsonar.projectName=ecommerce-platform -Dsonar.sources=backend,frontend -Dsonar.exclusions=frontend/node_modules/**,frontend/dist/**'
+                script {
+                    def scannerHome = tool 'SonarQube Scanner'
+
+                    withSonarQubeEnv('SonarQube') {
+                        bat "\"${scannerHome}\\bin\\sonar-scanner.bat\" -Dsonar.projectKey=ecommerce-platform -Dsonar.projectName=ecommerce-platform -Dsonar.sources=backend,frontend -Dsonar.exclusions=frontend/node_modules/**,frontend/dist/**"
+                    }
                 }
             }
         }
