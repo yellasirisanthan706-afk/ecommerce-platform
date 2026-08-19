@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { API_BASE_URL } from '../config.js'
 import { useCart } from '../context/CartContext.jsx'
 
 function Products() {
@@ -21,7 +22,7 @@ function Products() {
   })
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/products')
+    fetch(`${API_BASE_URL}/api/products`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Failed to fetch products')

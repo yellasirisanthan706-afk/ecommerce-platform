@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { API_BASE_URL } from '../config.js'
 
 function Orders() {
   const [orders, setOrders] = useState([])
@@ -19,7 +20,7 @@ function Orders() {
 
       try {
         const response = await fetch(
-          `http://localhost:5000/api/orders/${userId}`,
+          `${API_BASE_URL}/api/orders/${userId}`,
           {
             method: 'GET',
             headers: {

@@ -11,7 +11,7 @@ function ProductDetails() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/products/' + id)
+    fetch(`${API_BASE_URL}/api/products/` + id)
       .then((response) => {
         if (response.status === 404) {
           throw new Error('Product not found')
