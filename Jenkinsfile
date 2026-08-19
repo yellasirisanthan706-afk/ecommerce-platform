@@ -29,13 +29,13 @@ pipeline {
 
         stage('Backend Docker Build') {
             steps {
-                bat 'docker build -t ecommerce-platform-backend:jenkins ./backend'
+                bat '"C:\\Users\\yella\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" build -t ecommerce-platform-backend:jenkins ./backend'
             }
         }
 
         stage('Frontend Docker Build') {
             steps {
-                bat 'docker build -t ecommerce-platform-frontend:jenkins ./frontend'
+                bat '"C:\\Users\\yella\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" build -t ecommerce-platform-frontend:jenkins ./frontend'
             }
         }
     }
