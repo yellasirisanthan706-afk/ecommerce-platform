@@ -1,4 +1,4 @@
-name: E-Commerce CI
+name: E-Commerce CI/CD
 
 on:
   push:
@@ -8,10 +8,18 @@ on:
     branches:
       - main
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ghcr.io/yellasirisanthan706-afk/ecommerce-platform
+
 jobs:
   backend:
     name: Backend CI
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout code
@@ -29,9 +37,29 @@ jobs:
       - name: Build backend Docker image
         run: docker build -t ecommerce-platform-backend:ci ./backend
 
+      - name: Log in to GitHub Container Registry
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tag backend image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: docker tag ecommerce-platform-backend:ci ${{ env.IMAGE_PREFIX }}-backend:latest
+
+      - name: Push backend image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: docker push ${{ env.IMAGE_PREFIX }}-backend:latest
+
   frontend:
     name: Frontend CI
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout code
@@ -54,3 +82,19 @@ jobs:
 
       - name: Build frontend Docker image
         run: docker build -t ecommerce-platform-frontend:ci ./frontend
+
+      - name: Log in to GitHub Container Registry
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tag frontend image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: docker tag ecommerce-platform-frontend:ci ${{ env.IMAGE_PREFIX }}-frontend:latest
+
+      - name: Push frontend image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: docker push ${{ env.IMAGE_PREFIX }}-frontend:latest
