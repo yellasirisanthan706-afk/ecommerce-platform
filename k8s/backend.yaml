@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: ecommerce-backend
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: ecommerce-backend
