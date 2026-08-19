@@ -7,7 +7,12 @@ services:
     ports:
       - "5000:5000"
     environment:
-      DB_HOST: host.docker.internal
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
     restart: unless-stopped
 
   frontend:

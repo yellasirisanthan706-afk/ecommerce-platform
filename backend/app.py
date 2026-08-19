@@ -13,18 +13,21 @@ from flask_jwt_extended import (
 
 app = Flask(__name__)
 
-app.config["JWT_SECRET_KEY"] = "ecommerce-development-secret-key-change-later"
+app.config["JWT_SECRET_KEY"] = os.getenv(
+    "JWT_SECRET_KEY",
+    "development-secret"
+)
 
 jwt = JWTManager(app)
 
 CORS(app)
 
 DATABASE_URL = (
-    "dbname=ecommerce "
-    "user=postgres "
-    "password=1234567 "
+    f"dbname={os.getenv('DB_NAME', 'ecommerce')} "
+    f"user={os.getenv('DB_USER', 'postgres')} "
+    f"password={os.getenv('DB_PASSWORD', '')} "
     f"host={os.getenv('DB_HOST', 'localhost')} "
-    "port=5432"
+    f"port={os.getenv('DB_PORT', '5432')}"
 )
 
 
