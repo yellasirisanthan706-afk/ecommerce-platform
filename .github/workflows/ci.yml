@@ -38,7 +38,7 @@ jobs:
         run: docker build -t ecommerce-platform-backend:ci ./backend
 
       - name: Scan backend image with Trivy
-        uses: aquasecurity/trivy-action@0.36.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: ecommerce-platform-backend:ci
           format: table
@@ -93,7 +93,7 @@ jobs:
         run: docker build -t ecommerce-platform-frontend:ci ./frontend
 
       - name: Scan frontend image with Trivy
-        uses: aquasecurity/trivy-action@0.36.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: ecommerce-platform-frontend:ci
           format: table
