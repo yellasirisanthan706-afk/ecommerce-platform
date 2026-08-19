@@ -7,33 +7,48 @@ function Orders() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    const userId = localStorage.getItem('userId')
+    async function fetchOrders() {
+      const userId = localStorage.getItem('userId')
+      const accessToken = localStorage.getItem('accessToken')
 
-    if (!userId) {
-      setError('Please login to view your orders.')
-      setLoading(false)
-      return
-    }
+      if (!userId || !accessToken) {
+        setError('Please login to view your orders.')
+        setLoading(false)
+        return
+      }
 
-    fetch(
-      `http://localhost:5000/api/orders/${userId}`
-    )
-      .then((response) => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/orders/${userId}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+
+        const data = await response.json()
+
         if (!response.ok) {
-          throw new Error('Failed to fetch orders')
+          throw new Error(
+            data.msg ||
+              data.error ||
+              'Failed to fetch orders'
+          )
         }
 
-        return response.json()
-      })
-      .then((data) => {
         setOrders(data)
         setLoading(false)
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error(error)
         setError('Unable to load your orders.')
         setLoading(false)
-      })
+      }
+    }
+
+    fetchOrders()
   }, [])
 
   if (loading) {

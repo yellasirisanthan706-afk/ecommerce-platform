@@ -1,0 +1,21 @@
+services:
+
+  backend:
+    build:
+      context: ./backend
+    container_name: ecommerce-backend
+    ports:
+      - "5000:5000"
+    environment:
+      DB_HOST: host.docker.internal
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: ecommerce-frontend
+    ports:
+      - "5173:5173"
+    restart: unless-stopped
+    depends_on:
+      - backend

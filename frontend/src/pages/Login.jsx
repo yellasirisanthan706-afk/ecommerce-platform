@@ -46,6 +46,12 @@ function Login({
         return
       }
 
+      // Save JWT access token
+      localStorage.setItem(
+        'accessToken',
+        data.access_token
+      )
+
       // Save logged-in user information
       localStorage.setItem(
         'userEmail',
@@ -172,3 +178,4 @@ function Login({
 }
 
 export default Login
+

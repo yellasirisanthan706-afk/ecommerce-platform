@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import psycopg
@@ -22,7 +23,7 @@ DATABASE_URL = (
     "dbname=ecommerce "
     "user=postgres "
     "password=1234567 "
-    "host=localhost "
+    f"host={os.getenv('DB_HOST', 'localhost')} "
     "port=5432"
 )
 
