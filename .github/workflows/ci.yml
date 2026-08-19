@@ -14,7 +14,7 @@ env:
 
 jobs:
   backend:
-    name: Backend CI
+    name: Backend CI + Security Scan
     runs-on: ubuntu-latest
 
     permissions:
@@ -36,6 +36,15 @@ jobs:
 
       - name: Build backend Docker image
         run: docker build -t ecommerce-platform-backend:ci ./backend
+
+      - name: Scan backend image with Trivy
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ecommerce-platform-backend:ci
+          format: table
+          exit-code: 1
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
 
       - name: Log in to GitHub Container Registry
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -82,6 +91,15 @@ jobs:
 
       - name: Build frontend Docker image
         run: docker build -t ecommerce-platform-frontend:ci ./frontend
+
+      - name: Scan frontend image with Trivy
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ecommerce-platform-frontend:ci
+          format: table
+          exit-code: 1
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
 
       - name: Log in to GitHub Container Registry
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
