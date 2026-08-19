@@ -27,6 +27,14 @@ pipeline {
             }
         }
 
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    bat 'sonar-scanner.bat -Dsonar.projectKey=ecommerce-platform -Dsonar.projectName=ecommerce-platform -Dsonar.sources=backend,frontend -Dsonar.exclusions=frontend/node_modules/**,frontend/dist/**'
+                }
+            }
+        }
+
         stage('Backend Docker Build') {
             steps {
                 bat '"C:\\Users\\yella\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" build -t ecommerce-platform-backend:jenkins ./backend'
